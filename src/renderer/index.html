@@ -3,10 +3,19 @@
 
 <head>
     <title>NextTerm</title>
+    <script src="bootstrap.js" type="text/javascript"></script>
 </head>
 
-<body>
-    <h1>Welcome to NextTerm!</h1>
+<body ng-app="nextterm">
+    <h1>NextTerm Testbed</h1>
+    <div ng-controller="Test">
+        <h5>Command</h5>
+        <input type="text" ng-model="command"></input>
+        <button ng-click="run()">Run Command</button>
+
+        <h5>Output</h5>
+        <textarea ng-model="output" disabled="true" rows="20" cols="80"></textarea>
+    </div>
 </body>
 
 </html>

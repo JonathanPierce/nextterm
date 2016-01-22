@@ -4,6 +4,9 @@ const electron = require('electron');
 const app = electron.app;  // Module to control application life.
 const BrowserWindow = electron.BrowserWindow;  // Module to create native browser window.
 
+// Load in the commands API
+require("./main/commands.js");
+
 // Need global window references to prevent garbage collection
 var runningWindows = [];
 
@@ -40,5 +43,5 @@ var createWindow = function() {
 // initialization and is ready to create browser windows.
 app.on('ready', function() {
   // Create the browser window.
-  mainWindow =
+  createWindow();
 });
