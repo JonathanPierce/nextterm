@@ -1,0 +1,8 @@
+{
+  "name": "NextTerm",
+  "version": "0.0.1",
+  "main": "main/main.js",
+  "dependencies": {
+    "angular": "^1.5.0-rc.1"
+  }
+}
