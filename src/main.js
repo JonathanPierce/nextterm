@@ -20,7 +20,7 @@ app.on('window-all-closed', function() {
 });
 
 var createWindow = function() {
-    var newWindow = new BrowserWindow({width: 800, height: 600}),
+    var newWindow = new BrowserWindow({width: 1024, height: 768}),
         index;
 
     // and load the index.html of the app.

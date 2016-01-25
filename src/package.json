@@ -4,6 +4,8 @@
   "main": "main.js",
   "dependencies": {
     "angular": "^1.5.0-rc.1",
-    "electron-prebuilt": "^0.36.5"
+    "electron-prebuilt": "0.35.4",
+    "term.js": "0.0.7",
+    "pty.js": "^0.3.0"
   }
 }

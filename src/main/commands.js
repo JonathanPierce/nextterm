@@ -1,43 +1,54 @@
 var ipc = require("electron").ipcMain,
-    child_process = require("child_process");
+    pty = require("pty.js"),
+    child_process = require("child_process"),
+    childMap = {};
 
 // Run a command and print out standard output
 ipc.on("run-command", function(event, args) {
     var command = args.command,
-        onStdout, onStderr,
+        onData, onClose,
         id = args.id;
 
     // Create the child process
-    var child = child_process.spawn("bash", ["-c", command]);
+    var child = pty.spawn("bash", ["-c", command], {
+        name: 'xterm-color',
+        cols: 80,
+        rows: 24,
+        cwd: process.env.HOME,
+        env: process.env
+    });
+
+    // Save the child
+    childMap[id] = child;
 
     // Declare removable listeners
-    onStdout = function(text) {
-        event.sender.send("new-stdout", {
+    onData = function(text) {
+        event.sender.send("new-data", {
             id: id,
             text: text.toString()
         });
     };
 
-    onStderr = function(text) {
-        event.sender.send("new-stderr", {
-            id: id,
-            text: text.toString()
-        });
-    };
-
-    // Hook up listeners
-    child.stdout.on("data", onStdout);
-    child.stderr.on("data", onStderr);
-    child.once("close", function(code) {
-        // Remove listeners
-        child.stdout.removeListener("data", onStdout);
-        child.stderr.removeListener("data", onStderr);
+    onClose = function(code) {
+        // Remove from child map
+        childMap[id] = null;
 
         // Send the close
         event.sender.send("process-close", {
             id: id,
             code: code
         });
-    });
+    };
 
+    child.on("data", onData);
+    child.on("close", onClose);
+});
+
+// Write the input to the correct terminal
+ipc.on("write-terminal", function(event, args) {
+    if(childMap[args.id]) {
+        var child = childMap[args.id];
+
+        child.write(args.text);
+    }
 });

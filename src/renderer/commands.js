@@ -8,18 +8,11 @@ listeners = (function() {
     var register, degregister, emit,
         registrations = {};
 
-    ipc.on("new-stdout", function(event, args) {
+    ipc.on("new-data", function(event, args) {
         var id = args.id,
             text = args.text;
 
-        emit("stdout", id, text);
-    });
-
-    ipc.on("new-stderr", function(event, args) {
-        var id = args.id,
-            text = args.text;
-
-        emit("stderr", id, text);
+        emit("data", id, text);
     });
 
     ipc.on("process-close", function(event, args) {
@@ -30,12 +23,14 @@ listeners = (function() {
     });
 
     // Start listening for events for this process
-    register = function(id, stdout, stderr, close) {
-        registrations[id] = {
-            stdout: stdout,
-            stderr: stderr,
-            close: close
-        };
+    register = function(id, listeners) {
+        registrations[id] = {};
+
+        for(var key in listeners) {
+            if(listeners.hasOwnProperty(key)) {
+                registrations[id][key] = listeners[key];
+            }
+        }
     };
 
     deregister = function(id) {
@@ -64,38 +59,15 @@ listeners = (function() {
 })();
 
 Command = function(command, options) {
-    var id, output = [""],
-        onStdout, onStderr, onClose;
+    var id, onData, onClose, write;
 
     // generate a unique id
     id = idBase; idBase++;
 
     // Listeners
-    onStdout = function(text) {
-        var lines = text.split("\n");
-
-        // Add the first line to the end of the last
-        output[output.length - 1] += lines[0];
-
-        // Add the other lines to the end
-        output = output.concat(lines.slice(1));
-
-        // Keep only the last 40 lines
-        output = output.slice(-40);
-
+    onData = function(text) {
         // Emit to outside listener
-        options.onStdout && options.onStdout(getOutput());
-
-        // TEMP
-        console.log(getOutput());
-    };
-
-    onStderr = function(text) {
-        // TEMP
-        console.log("STDERR(" + id + "): " + text);
-
-        // Emit to outside listener
-        options.onStderr && options.onStderr(text);
+        options.onData && options.onData(text);
     };
 
     onClose = function(code) {
@@ -110,7 +82,10 @@ Command = function(command, options) {
     };
 
     // Register listeners
-    listeners.register(id, onStdout, onStderr, onClose);
+    listeners.register(id, {
+        data: onData,
+        close: onClose
+    });
 
     // Tell main to run the command
     ipc.send("run-command", {
@@ -118,15 +93,18 @@ Command = function(command, options) {
         command: command
     });
 
-    // Helper functions
-    var getOutput = function() {
-        return output.join("\n");
+    // Write data to the Terminal
+    write = function(text) {
+        ipc.send("write-terminal", {
+            id: id,
+            text: text
+        });
     };
 
     // Return out the interface
     return {
         id: id,
-        getOutput: getOutput
+        write: write
     };
 };
 
