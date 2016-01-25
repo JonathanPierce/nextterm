@@ -8,14 +8,12 @@
 </head>
 
 <body ng-app="nextterm">
-    <h1>NextTerm Testbed</h1>
-    <div ng-controller="Test">
-        <h5>Command</h5>
-        <input type="text" ng-model="command"></input>
-        <button ng-click="run()">Run Command</button>
-
-        <h5>Output</h5>
-        <div class="term"><div>
+    <div ng-controller="Wrapper">
+        <h1>NextTerm</h1>
+        <div ng-repeat="command in commands">
+            <app-console command="command"></app-console>
+        </div>
+        <appcommandbar wrapper="this"></appcommandbar>
     </div>
 </body>
 

@@ -1,3 +1,5 @@
 module.exports = {
-    test: require("./test")
+    wrapper: require("./wrapper"),
+    console: require("./console"),
+    commandBar: require("./commandBar")
 };

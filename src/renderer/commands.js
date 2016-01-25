@@ -58,8 +58,8 @@ listeners = (function() {
     };
 })();
 
-Command = function(command, options) {
-    var id, onData, onClose, write;
+Command = function(command) {
+    var id, onData, onClose, write, registered = {}, register;
 
     // generate a unique id
     id = idBase; idBase++;
@@ -67,7 +67,7 @@ Command = function(command, options) {
     // Listeners
     onData = function(text) {
         // Emit to outside listener
-        options.onData && options.onData(text);
+        registered.data && registered.data(text);
     };
 
     onClose = function(code) {
@@ -78,7 +78,7 @@ Command = function(command, options) {
         console.log("CLOSED " + id + " with code " + code);
 
         // Emit to outside listener
-        options.onClose && options.onClose(code);
+        registered.close && registered.close(code);
     };
 
     // Register listeners
@@ -101,10 +101,17 @@ Command = function(command, options) {
         });
     };
 
+    // Register listeners
+    register = function(handlers) {
+        registered = handlers;
+    };
+
     // Return out the interface
     return {
         id: id,
-        write: write
+        write: write,
+        command: command,
+        register: register
     };
 };
 
