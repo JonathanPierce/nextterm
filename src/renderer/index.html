@@ -8,10 +8,12 @@
 </head>
 
 <body ng-app="nextterm">
-    <div ng-controller="Wrapper">
-        <h1>NextTerm</h1>
-        <div ng-repeat="command in commands">
-            <app-console command="command"></app-console>
+    <div ng-controller="Wrapper" class="nextterm">
+        <appheader></appheader>
+        <div class="app-consoles">
+            <div ng-repeat="command in commands">
+                <appconsole command="command"></appconsole>
+            </div>
         </div>
         <appcommandbar wrapper="this"></appcommandbar>
     </div>

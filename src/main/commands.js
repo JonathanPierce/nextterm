@@ -12,8 +12,8 @@ ipc.on("run-command", function(event, args) {
     // Create the child process
     var child = pty.spawn("bash", ["-c", command], {
         name: 'xterm-color',
-        cols: 70,
-        rows: 10,
+        cols: 80,
+        rows: 15,
         cwd: process.env.HOME,
         env: process.env
     });

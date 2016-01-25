@@ -1,8 +1,6 @@
 var ngModule = require("../ngModule");
 
 ngModule.directive("appcommandbar", function() {
-    console.log("Ran commandBar.");
-
     return {
         restrict: "E",
         replace: true,

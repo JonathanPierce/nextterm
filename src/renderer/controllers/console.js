@@ -1,9 +1,7 @@
 var ngModule = require("../ngModule"),
     termjs = require('term.js');
 
-ngModule.directive("appConsole", function() {
-    console.log("Ran console.");
-
+ngModule.directive("appconsole", function() {
     return {
         restrict: "E",
         templateUrl: "partials/console.html",
@@ -16,8 +14,8 @@ ngModule.directive("appConsole", function() {
 
             // Create and mount the terminal
             term = new termjs.Terminal({
-                rows: 10,
-                cols: 70,
+                rows: 15,
+                cols: 80,
                 screenKeys: true
             });
 
@@ -35,13 +33,19 @@ ngModule.directive("appConsole", function() {
                     term.write(text);
                 },
                 close: function(code) {
+                    // get rid of the cursor
                     term.cursorEnabled = false;
                     term.cursorHidden = true;
+
+                    // resize the temrinal
+                    if(term.y <= 15) {
+                        term.resize(term.cols, term.y);
+                    }
                 }
             });
 
             // For debugging...
-            window.term = term;
+            window._term = term;
         }
     };
 });

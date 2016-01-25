@@ -27,7 +27,7 @@ var createWindow = function() {
     newWindow.loadURL('file://' + __dirname + '/renderer/index.html');
 
     // Open the DevTools.
-    newWindow.webContents.openDevTools();
+    process.env["DEV"] == "true" && newWindow.webContents.openDevTools();
 
     // Push onto the runningWindow global object
     runningWindows.push(newWindow);
