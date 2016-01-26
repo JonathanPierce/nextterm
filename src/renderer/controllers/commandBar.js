@@ -11,12 +11,22 @@ ngModule.directive("appcommandbar", function() {
         link: function($scope, element, attrs) {
             $scope.command = "";
 
-            $scope.runCommand = function() {
-                // Run the command
-                $scope.wrapper.runCommand($scope.command);
+            $scope.handleKeyDown = function($event) {
+                // Hit enter
+                if($event.keyCode === 13) {
+                    $scope.runCommand();
+                }
+            };
 
-                // Clear the input
-                $scope.command = "";
+            // Main function for running commands
+            $scope.runCommand = function() {
+                if($scope.command.length > 0) {
+                    // Run the command
+                    $scope.wrapper.runCommand($scope.command);
+
+                    // Clear the input
+                    $scope.command = "";
+                }
             };
         }
     };

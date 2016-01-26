@@ -1,4 +1,4 @@
 <div class="app-commandBar">
-    <input type="text" class="command-input" ng-model="command" placeholder="enter a command...">
-    <button ng-click="runCommand()" class="btn-run-command">Go!</button>
+    <input type="text" class="command-input" ng-model="command" ng-keydown="handleKeyDown($event)" placeholder="enter a command...">
+    <button ng-click="runCommand()" class="btn-run-command" ng-disabled="command.length == 0">Go!</button>
 </div>
