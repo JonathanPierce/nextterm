@@ -1,6 +1,7 @@
 var ipc = require("electron").ipcMain,
     pty = require("pty.js"),
     child_process = require("child_process"),
+    cwd = process.env.HOME,
     childMap = {};
 
 // Run a command and print out standard output
@@ -14,7 +15,7 @@ ipc.on("run-command", function(event, args) {
         name: 'xterm-color',
         cols: 80,
         rows: 15,
-        cwd: process.env.HOME,
+        cwd: cwd,
         env: process.env
     });
 
@@ -29,19 +30,20 @@ ipc.on("run-command", function(event, args) {
         });
     };
 
-    onClose = function(code) {
+    onClose = function(code, signal) {
         // Remove from child map
         childMap[id] = null;
 
         // Send the close
         event.sender.send("process-close", {
             id: id,
-            code: code
+            code: code,
+            signal: signal
         });
     };
 
     child.on("data", onData);
-    child.on("close", onClose);
+    child.on("exit", onClose);
 });
 
 // Write the input to the correct terminal
@@ -51,4 +53,21 @@ ipc.on("write-terminal", function(event, args) {
 
         child.write(args.text);
     }
+});
+
+// Change the working directory
+ipc.on("change-cwd", function(event, args) {
+    var command, output;
+
+    // From the curring working dir, cd into the new dir, pwd
+    command = "cd " + cwd + " && cd " + args.dir + " && pwd";
+    output = child_process.spawnSync("bash", ["-c", command]);
+    if(output.status === 0) {
+        cwd = output.stdout.toString().trim();
+    }
+
+    // Inform of the change
+    event.sender.send("cwd-changed", {
+        dir: cwd
+    });
 });

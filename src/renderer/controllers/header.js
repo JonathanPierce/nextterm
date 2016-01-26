@@ -1,4 +1,5 @@
-var ngModule = require("../ngModule");
+var ngModule = require("../ngModule"),
+    ipc = require("electron").ipcRenderer;
 
 ngModule.directive("appheader", function() {
     return {
@@ -8,6 +9,12 @@ ngModule.directive("appheader", function() {
         templateUrl: "partials/header.html",
         link: function($scope, element, attrs) {
             $scope.cwd = process.env.HOME;
+
+            ipc.on("cwd-changed", function(event, args) {
+                $scope.$apply(function() {
+                    $scope.cwd = args.dir;
+                });
+            });
         }
     };
 });

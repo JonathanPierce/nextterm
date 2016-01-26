@@ -2,6 +2,7 @@
 var ipc = require("electron").ipcRenderer,
     Command,
     listeners,
+    Commands,
     idBase = 0;
 
 listeners = (function() {
@@ -59,7 +60,7 @@ listeners = (function() {
 })();
 
 Command = function(command) {
-    var id, onData, onClose, write, registered = {}, register;
+    var id, onData, onClose, write, registered = {}, register, changedCWD;
 
     // generate a unique id
     id = idBase; idBase++;
@@ -76,6 +77,15 @@ Command = function(command) {
 
         // TEMP
         console.log("CLOSED " + id + " with code " + code);
+
+        // Did the working directory change?
+        var newCWD = null, isCD = Commands.isCD(command);
+        if(code === 0 && isCD !== null) {
+            // Change the working directory
+            ipc.send("change-cwd", {
+                dir: isCD
+            });
+        }
 
         // Emit to outside listener
         registered.close && registered.close(code);
@@ -115,8 +125,19 @@ Command = function(command) {
     };
 };
 
-module.exports = {
-    runCommand: function(command, options) {
-        return Command(command, options);
+Commands = {
+    runCommand: function(command) {
+        // Create a new command instance
+        return Command(command);
+    },
+    isCD: function(command) {
+        // Returns the last working directory from a command
+        var parts = command.toLowerCase().split(" ");
+        if(parts[0] === "cd" && parts.length === 2) {
+            return parts[1];
+        }
+        return null;
     }
 };
+
+module.exports = Commands;
