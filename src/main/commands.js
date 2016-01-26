@@ -1,6 +1,7 @@
 var ipc = require("electron").ipcMain,
     pty = require("pty.js"),
     child_process = require("child_process"),
+    dialog = require("electron").dialog,
     cwd = process.env.HOME,
     childMap = {};
 
@@ -69,5 +70,22 @@ ipc.on("change-cwd", function(event, args) {
     // Inform of the change
     event.sender.send("cwd-changed", {
         dir: cwd
+    });
+});
+
+// GUI change the working directory
+ipc.on("gui-change-cwd", function(event, args) {
+    dialog.showOpenDialog({
+        title: "Pick a Directory",
+        defaultPath: cwd,
+        properties: ["openDirectory", "createDirectory"]
+    }, function(results) {
+        // Change the directory
+        cwd = results[0];
+
+        // Inform of the change
+        event.sender.send("cwd-changed", {
+            dir: cwd
+        });
     });
 });
