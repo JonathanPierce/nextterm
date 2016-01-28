@@ -36,7 +36,10 @@ ngModule.controller("Wrapper", ["$scope", function($scope) {
     $scope.runCommand = function(command) {
         // Make sure we have space for this command
         if(!canExecute()) {
-            return window.alert("In order to start another program, you first need to close one the programs that is already running.", "Too many programs!");
+            return window.alert(
+                "In order to start another program, you first need to close one the programs that is already running.",
+                "Too many programs!"
+            );
         }
 
         // Create the command
@@ -53,4 +56,33 @@ ngModule.controller("Wrapper", ["$scope", function($scope) {
             $scope.commands.splice(pos, 1);
         }
     }
+
+    // Handle closing the window properly
+    window.onbeforeunload = function(e) {
+        var hasRunningProgram = false, confirmResult;
+
+        $scope.commands.map(function(command) {
+            if(command.isClosed() === false) {
+                hasRunningProgram = true;
+            }
+        });
+
+        if(hasRunningProgram) {
+            confirmResult = window.confirm(
+                "There are still programs running. Are you sure you want to close NextTerm? All running programs will be killed.",
+                "Are you sure?"
+            );
+
+            if(confirmResult === true) {
+                // Close all running programs
+                $scope.commands.map(function(command) {
+                    if(command.isClosed() === false) {
+                        command.kill();
+                    }
+                });
+            } else {
+                return false; // Prevent the close
+            }
+        }
+    };
 }]);
