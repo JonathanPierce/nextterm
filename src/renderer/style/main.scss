@@ -1,0 +1,41 @@
+html, body {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+    border: none;
+    font-family: "Arial", sans-serif;
+    background-color: #F0F0F0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+*:focus {
+    outline: none;
+}
+
+.no-select {
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: default;
+}
+
+/* OVERALL LAYOUT */
+.nextterm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+
+// Color constants
+$main_color: #0043FF;
+$main_accent: #00AAFF;
+
+// Import all files
+@import "terminal.scss";
+@import "header.scss";
+@import "footer.scss";

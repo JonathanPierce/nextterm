@@ -1,0 +1,58 @@
+/* TERM.JS TERMINALS */
+.terminal {
+  width: auto;
+  border: #000 solid 5px;
+  font-family: "DejaVu Sans Mono", "Liberation Mono", monospace;
+  font-size: 11px;
+  color: #f0f0f0;
+  background: #000;
+}
+
+.terminal-cursor {
+  color: #000;
+  background: #f0f0f0;
+}
+
+/* CONSOLES */
+.app-consoles {
+    flex: 1 1 auto;
+    overflow: auto;
+    width: 100%;
+    padding: 4px;
+}
+
+.app-console {
+    border: 1px solid $main_accent;
+    margin-bottom: 4px;
+}
+
+.app-console-header {
+    background: $main_accent;
+    color: white;
+    font-size: 11pt;
+    padding: 2px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.app-console-command {
+    flex: 1 0 auto;
+}
+
+.app-console-options {
+    flex: 0 0 auto;
+}
+
+.app-console-options div {
+    opacity: 0.5;
+    transition: 0.1s ease-in-out all;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.app-console-options div:hover {
+    opacity: 1.0;
+    cursor: pointer;
+}

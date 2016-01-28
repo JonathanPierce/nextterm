@@ -5,7 +5,8 @@
   "dependencies": {
     "angular": "^1.5.0-rc.1",
     "electron-prebuilt": "0.35.4",
-    "term.js": "0.0.7",
-    "pty.js": "^0.3.0"
+    "node-sass": "^3.4.2",
+    "pty.js": "^0.3.0",
+    "term.js": "0.0.7"
   }
 }
