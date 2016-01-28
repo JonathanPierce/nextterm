@@ -12,6 +12,8 @@ ngModule.directive("appconsole", function() {
         link: function($scope, element, attrs) {
             var term;
 
+            $scope.hasOutput = false;
+
             // Create and mount the terminal
             term = new termjs.Terminal({
                 rows: 15,
@@ -31,13 +33,18 @@ ngModule.directive("appconsole", function() {
             $scope.command.register({
                 data: function(text) {
                     term.write(text);
+
+                    // We have output, show the terminal
+                    $scope.$apply(function() {
+                        $scope.hasOutput = true;
+                    });
                 },
                 close: function(code) {
                     // get rid of the cursor
                     term.cursorEnabled = false;
                     term.cursorHidden = true;
 
-                    // resize the temrinal
+                    // resize the terminal
                     if(term.y <= 15) {
                         term.resize(term.cols, term.y);
                     }

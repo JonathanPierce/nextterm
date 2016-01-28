@@ -132,7 +132,7 @@ Commands = {
     },
     isCD: function(command) {
         // Returns the last working directory from a command
-        var parts = command.toLowerCase().split(" ");
+        var parts = command.split(" ");
         if(parts[0] === "cd" && parts.length === 2) {
             return parts[1];
         }
