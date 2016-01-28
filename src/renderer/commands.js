@@ -61,7 +61,7 @@ listeners = (function() {
 
 Command = function(command) {
     var id, onData, onClose, write, registered = {},
-        register, kill;
+        register, kill, closed = false, isClosed;
 
     // generate a unique id
     id = idBase; idBase++;
@@ -73,6 +73,9 @@ Command = function(command) {
     };
 
     onClose = function(code) {
+        // Mark as closed
+        closed = true;
+
         // Deregister any listeners
         listeners.deregister(id);
 
@@ -124,9 +127,15 @@ Command = function(command) {
         registered = handlers;
     };
 
+    // Has the program exited?
+    isClosed = function() {
+        return closed;
+    };
+
     // Return out the interface
     return {
         id: id,
+        isClosed: isClosed,
         write: write,
         command: command,
         register: register,
@@ -140,7 +149,7 @@ Commands = {
         return Command(command);
     },
     isCD: function(command) {
-        // Returns the last working directory from a command
+        // Returns the new working directory if the command is "cd", otherwise null
         var parts = command.split(" ");
         if(parts[0] === "cd" && parts.length === 2) {
             return parts[1];

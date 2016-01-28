@@ -11,7 +11,7 @@ ngModule.directive("appconsole", function() {
         },
         replace: true,
         link: function($scope, element, attrs) {
-            var term, closed = false;
+            var term;
 
             $scope.hasOutput = false;
 
@@ -41,9 +41,6 @@ ngModule.directive("appconsole", function() {
                     });
                 },
                 close: function(code) {
-                    // Mark this is closed
-                    closed = true;
-
                     // get rid of the cursor
                     term.cursorEnabled = false;
                     term.cursorHidden = true;
@@ -58,7 +55,7 @@ ngModule.directive("appconsole", function() {
             // Close this command
             $scope.close = function() {
                 // If the program is complete, simply remove
-                if(closed === true) {
+                if($scope.command.isClosed() === true) {
                     $scope.wrapper.close($scope.command);
                     return;
                 }
@@ -66,7 +63,7 @@ ngModule.directive("appconsole", function() {
                 // Otherwise, ask for confirmation
                 var result = window.confirm(
                     "This program is still running. If you close it, unsaved data may be lost. Are you sure you want to close it?",
-                    "Close Running Program"
+                    "Close Running Program?"
                 );
                 if(result === true) {
                     $scope.wrapper.close($scope.command);
