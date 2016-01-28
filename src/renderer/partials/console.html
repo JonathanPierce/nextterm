@@ -1,5 +1,10 @@
 <div class="app-console">
-    <div class="app-console-header">{{command.command}}</div>
+    <div class="app-console-header">
+        <div class="app-console-command">{{command.command}}</div>
+        <div class="app-console-options">
+            <div class="no-select" ng-click="close()" title="close this command">X</div>
+        </div>
+    </div>
     <div class="app-console-wrapper" ng-hide="!hasOutput">
         <div class="term"></div>
     </div>

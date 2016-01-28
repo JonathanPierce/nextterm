@@ -111,6 +111,30 @@ html, body {
     color: white;
     font-size: 11pt;
     padding: 2px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.app-console-command {
+    flex: 1 0 auto;
+}
+
+.app-console-options {
+    flex: 0 0 auto;
+}
+
+.app-console-options div {
+    opacity: 0.5;
+    transition: 0.1s ease-in-out all;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.app-console-options div:hover {
+    opacity: 1.0;
+    cursor: pointer;
 }
 
 /* COMMAND BAR */
@@ -146,8 +170,10 @@ html, body {
     font-size: 14pt;
     border: none;
     cursor: pointer;
+    transition: 0.1 ease-in-out all;
 }
 
 .app-commandBar .btn-run-command:disabled {
     cursor: not-allowed;
+    opacity: 0.5;
 }

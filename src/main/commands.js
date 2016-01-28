@@ -56,6 +56,15 @@ ipc.on("write-terminal", function(event, args) {
     }
 });
 
+// KIll a program
+ipc.on("kill-program", function(event, args) {
+    if(childMap[args.id]) {
+        var child = childMap[args.id];
+
+        child.destroy();
+    }
+});
+
 // Change the working directory
 ipc.on("change-cwd", function(event, args) {
     var command, output;

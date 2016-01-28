@@ -60,7 +60,8 @@ listeners = (function() {
 })();
 
 Command = function(command) {
-    var id, onData, onClose, write, registered = {}, register, changedCWD;
+    var id, onData, onClose, write, registered = {},
+        register, kill;
 
     // generate a unique id
     id = idBase; idBase++;
@@ -111,6 +112,13 @@ Command = function(command) {
         });
     };
 
+    // Kill the program
+    kill = function() {
+        ipc.send("kill-program", {
+            id: id
+        });
+    }
+
     // Register listeners
     register = function(handlers) {
         registered = handlers;
@@ -121,7 +129,8 @@ Command = function(command) {
         id: id,
         write: write,
         command: command,
-        register: register
+        register: register,
+        kill: kill
     };
 };
 

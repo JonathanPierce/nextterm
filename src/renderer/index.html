@@ -12,7 +12,7 @@
         <appheader></appheader>
         <div class="app-consoles">
             <div ng-repeat="command in commands">
-                <appconsole command="command"></appconsole>
+                <appconsole command="command" wrapper="this"></appconsole>
             </div>
         </div>
         <appcommandbar wrapper="this"></appcommandbar>
