@@ -8,38 +8,37 @@
     background-color: $main_color;
     border-bottom: 1px solid $main_accent;
     flex: 0 0 auto;
-}
 
-.app-header div {
-    display: flex;
-    transition: 0.1s ease-in-out all;
-    padding: 4px;
-    height: 100%;
-    flex-direction: row;
-    align-items: center;
-}
+    div {
+        display: flex;
+        transition: 0.1s ease-in-out all;
+        padding: 4px;
+        height: 100%;
+        flex-direction: row;
+        align-items: center;
+    }
 
-.app-header .hover-bg:hover {
-    background-color: rgba(255,255,255,0.2);
-    cursor: pointer;
-}
+    .hover-bg:hover {
+        background-color: rgba(255,255,255,0.2);
+        cursor: pointer;
+    }
 
-.app-header .app-cwd {
-    flex: 1 1 auto;
-}
+    .app-cwd {
+        flex: 1 1 auto;
+    }
 
-.app-header .app-cwd-bar {
-    background-color: rgba(255,255,255,0.2);
-    padding: 3px 6px;
-    color: white;
-    cursor: pointer;
-}
+    .app-cwd-bar {
+        background-color: rgba(255,255,255,0.2);
+        padding: 3px 6px;
+        color: white;
+        cursor: pointer;
+    }
 
-.app-header .app-logo, .app-header .app-header-options {
-    flex: 0 1 auto;
-    color: white;
-    font-size: 18pt;
-    font-weight: 800;
-    padding-left: 12px;
-    padding-right: 12px;
+    .app-logo, .app-header-options {
+        flex: 0 1 auto;
+        color: white;
+        font-size: 18pt;
+        font-weight: 600;
+        padding: 0px 8px;
+    }
 }

@@ -5,35 +5,35 @@
     border-top: 1px solid $main_accent;
     display: flex;
     background-color: $main_color;
-}
 
-.app-commandBar .command-input {
-    flex: 1 1 auto;
-    margin: 2px;
-    border: none;
-    padding: 3px 9px;
-    font-size: 12pt;
-    color: white;
-    background: none;
-}
+    .command-input {
+        flex: 1 1 auto;
+        margin: 2px;
+        border: none;
+        padding: 3px 9px;
+        font-size: 12pt;
+        color: white;
+        background: none;
 
-.command-input::-webkit-input-placeholder {
-    color: rgba(255,255,255,0.5);
-}
+        &::-webkit-input-placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+    }
 
-.app-commandBar .btn-run-command {
-    flex: 0 1 auto;
-    margin: 2px;
-    margin-left: 0px;
-    color: white;
-    background-color: rgba(255,255,255,0.2);
-    font-size: 14pt;
-    border: none;
-    cursor: pointer;
-    transition: 0.1 ease-in-out all;
-}
+    .btn-run-command {
+        flex: 0 1 auto;
+        margin: 2px;
+        margin-left: 0px;
+        color: white;
+        background-color: rgba(255,255,255,0.2);
+        font-size: 14pt;
+        border: none;
+        cursor: pointer;
+        transition: 0.1 ease-in-out all;
 
-.app-commandBar .btn-run-command:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
+        &:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+    }
 }

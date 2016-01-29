@@ -10,10 +10,10 @@ html, body {
 
 * {
     box-sizing: border-box;
-}
 
-*:focus {
-    outline: none;
+    &:focus {
+        outline: none;
+    }
 }
 
 .no-select {
@@ -39,3 +39,4 @@ $main_accent: #00AAFF;
 @import "terminal.scss";
 @import "header.scss";
 @import "footer.scss";
+@import "icons.scss";

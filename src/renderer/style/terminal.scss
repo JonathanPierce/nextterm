@@ -43,16 +43,17 @@
 
 .app-console-options {
     flex: 0 0 auto;
-}
 
-.app-console-options div {
-    opacity: 0.5;
-    transition: 0.1s ease-in-out all;
-    padding-left: 3px;
-    padding-right: 3px;
-}
+    div {
+        opacity: 0.5;
+        transition: 0.1s ease-in-out all;
+        padding-left: 2px;
+        padding-right: 2px;
+        font-size: 10pt;
+    }
 
-.app-console-options div:hover {
-    opacity: 1.0;
-    cursor: pointer;
+    div:hover {
+        opacity: 1.0;
+        cursor: pointer;
+    }
 }

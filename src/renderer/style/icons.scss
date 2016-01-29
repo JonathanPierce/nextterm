@@ -1,0 +1,55 @@
+// From IcoMoon Free documention.
+@font-face {
+    font-family: 'IcoMoon-Free';
+    src: url('../../assets/IcoMoon-Free.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.icon {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'IcoMoon-Free' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Enable Ligatures ================ */
+    letter-spacing: 0;
+    -webkit-font-feature-settings: "liga";
+    font-feature-settings: "liga";
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+}
+// End from IcoMoon Free documention.
+
+.icon-menu::before {
+    content: "\e9bd";
+}
+
+.icon-settings::before {
+    content: "\e994";
+}
+
+.icon-running::before {
+    content: "\e97c";
+}
+
+.icon-success::before {
+    content: "\ea10";
+}
+
+.icon-error::before {
+    content: "\ea08";
+}
+
+.icon-close::before {
+    content: "\ea0f";
+}
+
+.icon-run::before {
+    content: "\ea3c";
+}

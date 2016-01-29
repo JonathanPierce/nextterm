@@ -90,11 +90,13 @@ ipc.on("gui-change-cwd", function(event, args) {
         properties: ["openDirectory", "createDirectory"]
     }, function(results) {
         // Change the directory
-        cwd = results[0];
+        if(results) {
+            cwd = results[0];
 
-        // Inform of the change
-        event.sender.send("cwd-changed", {
-            dir: cwd
-        });
+            // Inform of the change
+            event.sender.send("cwd-changed", {
+                dir: cwd
+            });
+        }
     });
 });
