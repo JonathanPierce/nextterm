@@ -57,3 +57,38 @@
         cursor: pointer;
     }
 }
+
+@keyframes running-indicator {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(180deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.app-console-indicator {
+    padding-right: 6px;
+
+    &.icon-error {
+        color: red;
+    }
+
+    &.icon-success {
+        color: green;
+    }
+
+    &.icon-running {
+        color: rgba(255,255,255,0.8);
+        animation-name: running-indicator;
+        animation-iteration-count: infinite;
+        animation-duration: 0.75s;
+        transform-origin: 7.5px 50%;
+        animation-timing-function: linear;
+    }
+}

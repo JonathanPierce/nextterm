@@ -15,6 +15,8 @@ ngModule.directive("appconsole", function() {
 
             $scope.hasOutput = false;
 
+            $scope.indicatorClass = "icon-running";
+
             // Create and mount the terminal
             term = new termjs.Terminal({
                 rows: 15,
@@ -49,6 +51,15 @@ ngModule.directive("appconsole", function() {
                     if(term.y <= 15) {
                         term.resize(term.cols, term.y);
                     }
+
+                    $scope.$apply(function() {
+                        // Set the indicator
+                        if(code === 0) {
+                            $scope.indicatorClass = "icon-success";
+                        } else {
+                            $scope.indicatorClass = "icon-error";
+                        }
+                    });
                 }
             });
 
