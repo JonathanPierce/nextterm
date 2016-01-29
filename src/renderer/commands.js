@@ -59,9 +59,9 @@ listeners = (function() {
     };
 })();
 
-Command = function(command) {
+Command = function(command, options) {
     var id, onData, onClose, write, registered = {},
-        register, kill, closed = false, isClosed;
+        register, kill, closed = false, isClosed, resize;
 
     // generate a unique id
     id = idBase; idBase++;
@@ -104,7 +104,8 @@ Command = function(command) {
     // Tell main to run the command
     ipc.send("run-command", {
         id: id,
-        command: command
+        command: command,
+        cols: options.cols
     });
 
     // Write data to the Terminal
@@ -120,6 +121,17 @@ Command = function(command) {
         ipc.send("kill-program", {
             id: id
         });
+    }
+
+    // Resize the underlying terminal
+    resize = function(dims) {
+        ipc.send("resize-program", {
+            id: id,
+            dims: dims
+        });
+
+        // Inform the outside world
+        registered.resize && registered.resize(dims);
     }
 
     // Register listeners
@@ -139,14 +151,15 @@ Command = function(command) {
         write: write,
         command: command,
         register: register,
-        kill: kill
+        kill: kill,
+        resize: resize
     };
 };
 
 Commands = {
-    runCommand: function(command) {
+    runCommand: function(command, options) {
         // Create a new command instance
-        return Command(command);
+        return Command(command, options || {});
     },
     isCD: function(command) {
         // Returns the new working directory if the command is "cd", otherwise null

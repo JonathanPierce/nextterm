@@ -31,6 +31,13 @@ html, body {
     height: 100%;
 }
 
+.app-welcome {
+    text-align: center;
+    font-size: 14pt;
+    color: rgb(128,128,128);
+    padding: 12px;
+}
+
 // Color constants
 $main_color: #0043FF;
 $main_accent: #00AAFF;

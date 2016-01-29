@@ -2,9 +2,10 @@ var ngModule = require("../ngModule"),
     commands = require("../commands");
 
 ngModule.controller("Wrapper", ["$scope", function($scope) {
-    var canExecute;
+    var canExecute, resizeTimeout, resizeComplete;
 
     $scope.commands = [];
+    $scope.cols = Math.floor((document.body.offsetWidth - 16) / 6.69); // Rough initial estimate
 
     // Can we execute a command?
     canExecute = function() {
@@ -43,7 +44,9 @@ ngModule.controller("Wrapper", ["$scope", function($scope) {
         }
 
         // Create the command
-        var newCommand = commands.runCommand(command);
+        var newCommand = commands.runCommand(command, {
+            cols: $scope.cols
+        });
 
         // Add to the array
         $scope.commands.push(newCommand);
@@ -55,7 +58,20 @@ ngModule.controller("Wrapper", ["$scope", function($scope) {
         if(pos !== -1) {
             $scope.commands.splice(pos, 1);
         }
-    }
+
+        // If nothing there, focus on command bar
+        if(!$scope.commands.length) {
+            $scope.focusCommandBar();
+        }
+    };
+
+    // Focuses on the command bar
+    $scope.focusCommandBar = function() {
+        window.setTimeout(function() {
+            document.querySelector(".command-input").focus();
+        }, 100); // Delay b/c terminals can steal focus
+    };
+    $scope.focusCommandBar(); // Focus on launch!
 
     // Handle closing the window properly
     window.onbeforeunload = function(e) {
@@ -85,4 +101,37 @@ ngModule.controller("Wrapper", ["$scope", function($scope) {
             }
         }
     };
+
+    // Handle resizing the window properly
+    resizeComplete = function() {
+        // Reset the resize timeout
+        resizeTimeout = null;
+
+        // Calculate the possible number of columns
+        var sampleElem = document.querySelector(".app-console-wrapper .terminal"), cols;
+
+        if(sampleElem) {
+            cols = Math.max(20, Math.floor(sampleElem.offsetWidth / 6.69));
+
+            if(cols !== $scope.cols) {
+                $scope.cols = cols;
+
+                // Resize the width of each one
+                $scope.commands.map(function(command) {
+                    command.resize({
+                        cols: $scope.cols
+                    });
+                });
+            }
+        }
+    };
+
+    resizeTimeout = null;
+    window.addEventListener("resize", function() {
+        if(resizeComplete !== null) {
+            window.clearTimeout(resizeTimeout);
+        }
+
+        resizeTimeout = window.setTimeout(resizeComplete, 300);
+    });
 }]);

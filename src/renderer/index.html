@@ -11,6 +11,9 @@
     <div ng-controller="Wrapper" class="nextterm">
         <appheader></appheader>
         <div class="app-consoles">
+            <div ng-if="!commands.length" class="app-welcome no-select">
+                No commands yet. Enter a command in the box below to get started.
+            </div>
             <div ng-repeat="command in commands">
                 <appconsole command="command" wrapper="this"></appconsole>
             </div>

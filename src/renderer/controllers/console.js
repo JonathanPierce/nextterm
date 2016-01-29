@@ -14,13 +14,12 @@ ngModule.directive("appconsole", function() {
             var term;
 
             $scope.hasOutput = false;
-
             $scope.indicatorClass = "icon-running";
 
             // Create and mount the terminal
             term = new termjs.Terminal({
                 rows: 15,
-                cols: 80,
+                cols: $scope.wrapper.cols,
                 screenKeys: true
             });
 
@@ -52,6 +51,12 @@ ngModule.directive("appconsole", function() {
                         term.resize(term.cols, term.y);
                     }
 
+                    // If we're the last command, focus on the command bar
+                    if($scope.command === $scope.wrapper.commands.slice(-1)[0]) {
+                        $scope.wrapper.focusCommandBar();
+                    }
+
+                    // Other UI stuff for Angular
                     $scope.$apply(function() {
                         // Set the indicator
                         if(code === 0) {
@@ -60,6 +65,12 @@ ngModule.directive("appconsole", function() {
                             $scope.indicatorClass = "icon-error";
                         }
                     });
+                },
+                resize: function(dims) {
+                    // Make the displayed terminal math the back end terminal size
+                    var rows = dims.rows || term.rows, cols = dims.cols || term.cols;
+
+                    term.resize(cols, rows);
                 }
             });
 
@@ -81,9 +92,6 @@ ngModule.directive("appconsole", function() {
                     $scope.command.kill();
                 }
             };
-
-            // For debugging...
-            window._term = term;
         }
     };
 });

@@ -14,7 +14,7 @@ ipc.on("run-command", function(event, args) {
     // Create the child process
     var child = pty.spawn("bash", ["-c", command], {
         name: 'xterm-color',
-        cols: 80,
+        cols: args.cols || 80,
         rows: 15,
         cwd: cwd,
         env: process.env
@@ -62,6 +62,17 @@ ipc.on("kill-program", function(event, args) {
         var child = childMap[args.id];
 
         child.destroy();
+    }
+});
+
+// Resize a program
+ipc.on("resize-program", function(event, args) {
+    if(childMap[args.id]) {
+        var child = childMap[args.id],
+        rows = args.dims.rows || child.rows,
+        cols = args.dims.cols || child.cols;
+
+        child.resize(cols, rows);
     }
 });
 
