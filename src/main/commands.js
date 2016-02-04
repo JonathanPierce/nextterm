@@ -81,16 +81,16 @@ ipc.on("change-cwd", function(event, args) {
     var command, output;
 
     // From the curring working dir, cd into the new dir, pwd
-    command = "cd " + cwd + " && cd " + args.dir + " && pwd";
-    output = child_process.spawnSync("bash", ["-c", command]);
+    command = "cd " + args.dir + " && pwd";
+    output = child_process.spawnSync("bash", ["-c", command], {cwd: cwd});
     if(output.status === 0) {
         cwd = output.stdout.toString().trim();
-    }
 
-    // Inform of the change
-    event.sender.send("cwd-changed", {
-        dir: cwd
-    });
+        // Inform of the change
+        event.sender.send("cwd-changed", {
+            dir: cwd
+        });
+    }
 });
 
 // GUI change the working directory

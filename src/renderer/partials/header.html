@@ -1,11 +1,23 @@
 <div class="app-header">
-    <div class="app-logo no-select hover-bg">
+    <div class="app-logo no-select hover-bg" ng-click="toggleLogoFlyout()">
         <span title="Made with love from the tears of Richard Stallman!">NextTerm</span>
     </div>
+
+    <appflyout left="4" top="40" display-if="showLogoFlyout">
+        <div>NextTerm v{{packageJSON.version}}</div>
+        <div>&copy; 2016 Jonathan Pierce. All rights reserved.</div>
+        <div><a href="{{packageJSON.repo}}">Find us on GitHub!</a></div>
+    </appflyout>
+
     <div class="app-cwd">
         <span class="app-cwd-bar no-select" title="change working directory" ng-click="chooseGUI()">{{cwd}}</span>
     </div>
+
     <div class="app-header-options no-select hover-bg">
-        <span class="icon icon-settings" title="Settings"></span>
+        <span class="icon icon-settings" title="Settings" ng-click="toggleSettingsFlyout()"></span>
     </div>
+
+    <appflyout right="4" top="40" display-if="showSettingsFlyout">
+        <div>Settings coming soon!</div>
+    </appflyout>
 </div>
