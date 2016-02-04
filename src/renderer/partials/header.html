@@ -6,15 +6,15 @@
     <appflyout left="4" top="40" display-if="showLogoFlyout">
         <div>NextTerm v{{packageJSON.version}}</div>
         <div>&copy; 2016 Jonathan Pierce. All rights reserved.</div>
-        <div><a href="{{packageJSON.repo}}">Find us on GitHub!</a></div>
+        <button ng-click="openGithub()">Find us on Github!</button>
     </appflyout>
 
     <div class="app-cwd">
         <span class="app-cwd-bar no-select" title="change working directory" ng-click="chooseGUI()">{{cwd}}</span>
     </div>
 
-    <div class="app-header-options no-select hover-bg">
-        <span class="icon icon-settings" title="Settings" ng-click="toggleSettingsFlyout()"></span>
+    <div class="app-header-options no-select hover-bg" ng-click="toggleSettingsFlyout()">
+        <span class="icon icon-settings" title="Settings"></span>
     </div>
 
     <appflyout right="4" top="40" display-if="showSettingsFlyout">

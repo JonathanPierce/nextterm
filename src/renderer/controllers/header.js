@@ -35,6 +35,11 @@ ngModule.directive("appheader", function() {
             $scope.toggleSettingsFlyout = function() {
                 $scope.showSettingsFlyout = true;
             };
+
+            // Open the github for this project
+            $scope.openGithub = function() {
+                require("shell").openExternal(packageJSON.repo);
+            };
         }
     };
 });

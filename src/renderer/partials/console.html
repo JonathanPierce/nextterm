@@ -6,7 +6,10 @@
             <div class="no-select icon icon-close" ng-click="close()" title="close this command"></div>
         </div>
     </div>
-    <div class="app-console-wrapper" ng-hide="!hasOutput">
+    <div class="app-console-wrapper" ng-show="hasOutput">
         <div class="term"></div>
+    </div>
+    <div class="app-console-footer no-select" ng-show="hasOutput" title="resize terminal"
+        ng-mousedown="startResizing($event)">
     </div>
 </div>

@@ -5,7 +5,7 @@ ngModule.controller("Wrapper", ["$scope", function($scope) {
     var canExecute, resizeTimeout, resizeComplete;
 
     $scope.commands = [];
-    $scope.cols = Math.floor((document.body.offsetWidth - 16) / 6.69); // Rough initial estimate
+    $scope.cols = Math.floor((document.body.offsetWidth - 32) / 6.69); // Rough initial estimate
 
     // Can we execute a command?
     canExecute = function() {

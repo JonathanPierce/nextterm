@@ -11,7 +11,7 @@ ngModule.directive("appconsole", function() {
         },
         replace: true,
         link: function($scope, element, attrs) {
-            var term;
+            var term, resizeStartY, resizeStartHeight, doResizing, endResizing, resizeAccDiff = 0;
 
             $scope.hasOutput = false;
             $scope.indicatorClass = "icon-running";
@@ -91,6 +91,51 @@ ngModule.directive("appconsole", function() {
                     $scope.wrapper.close($scope.command);
                     $scope.command.kill();
                 }
+            };
+
+            // Stuff for resizing
+            $scope.startResizing = function(e) {
+                resizeStartY = e.clientY;
+                resizeStartHeight = element[0].querySelector(".term").offsetHeight;
+
+                document.body.addEventListener("mousemove", doResizing);
+                document.body.addEventListener("mouseup", endResizing);
+                document.body.addEventListener("mouseleave", endResizing);
+            };
+
+            doResizing = function(e) {
+                var diff = e.clientY - resizeStartY;
+                if(diff > 0 && e.clientY >= document.body.offsetHeight - 45) {
+                    // Help out near the bottom
+                    resizeAccDiff += 5;
+                    diff += resizeAccDiff;
+                    element[0].querySelector(".app-console-footer").scrollIntoView(false);
+                } else {
+                    resizeAccDiff = 0;
+                }
+                element[0].querySelector(".term").style.height = Math.max(8, (resizeStartHeight + diff)) + "px";
+                window.getSelection().removeAllRanges(); // Prevent weird selection crap
+
+            };
+
+            endResizing = function(e) {
+                var height, rows;
+
+                // Remove all listeners
+                document.body.removeEventListener("mousemove", doResizing);
+                document.body.removeEventListener("mouseup", endResizing);
+                document.body.removeEventListener("mouseleave", endResizing);
+
+                // Get the height, reset it
+                height = element[0].querySelector(".term").offsetHeight;
+                element[0].querySelector(".term").style.height = "auto";
+
+                // Calculate the number of rows
+                rows = Math.max(1, Math.ceil(height / 13.7));
+
+                // Do the resize
+                $scope.command.resize({rows: rows});
+                element[0].scrollIntoView();
             };
         }
     };

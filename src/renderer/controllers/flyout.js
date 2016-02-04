@@ -47,7 +47,6 @@ ngModule.directive("appflyout", function() {
                 if(isListening === false) {
                     document.body.appendChild(clickEater);
                     isListening = true;
-                    console.log("Started listening!");
                 }
             }
 
@@ -55,7 +54,6 @@ ngModule.directive("appflyout", function() {
                 if(isListening === true) {
                     document.body.removeChild(clickEater);
                     isListening = false;
-                    console.log("Stopped listening!");
                 }
             }
 

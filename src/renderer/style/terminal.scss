@@ -25,6 +25,11 @@
 .app-console {
     border: 1px solid $main_accent;
     margin-bottom: 4px;
+
+    .term {
+        overflow: hidden;
+        background: black;
+    }
 }
 
 .app-console-header {
@@ -57,6 +62,13 @@
         opacity: 1.0;
         cursor: pointer;
     }
+}
+
+.app-console-footer {
+    height: 3px;
+    cursor: row-resize;
+    background-color: $main_accent;
+    text-align: center;
 }
 
 @keyframes running-indicator {
