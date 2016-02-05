@@ -10,7 +10,7 @@
     </appflyout>
 
     <div class="app-cwd">
-        <span class="app-cwd-bar no-select" title="change working directory" ng-click="chooseGUI()">{{cwd}}</span>
+        <span class="app-cwd-bar no-select" title="change working directory" ng-click="chooseGUI()">{{cwd | path}}</span>
     </div>
 
     <div class="app-header-options no-select hover-bg" ng-click="toggleSettingsFlyout()">

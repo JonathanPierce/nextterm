@@ -3,13 +3,16 @@
         <div ng-class="['app-console-indicator', 'icon', 'no-select', indicatorClass]"></div>
         <div class="app-console-command">{{command.command}}</div>
         <div class="app-console-options">
+            <div class="no-select icon" ng-class="{'icon-expand': expanded, 'icon-collapse': !expanded}"
+                title="{{expanded ? 'Collapse terminal' : 'Expand terminal'}}"
+                ng-click="toggleCollapse()" ng-show="hasOutput"></div>
             <div class="no-select icon icon-close" ng-click="close()" title="close this command"></div>
         </div>
     </div>
-    <div class="app-console-wrapper" ng-show="hasOutput">
+    <div class="app-console-wrapper" ng-show="hasOutput && expanded">
         <div class="term"></div>
     </div>
-    <div class="app-console-footer no-select" ng-show="hasOutput" title="resize terminal"
+    <div class="app-console-footer no-select" ng-show="hasOutput && expanded" title="resize terminal"
         ng-mousedown="startResizing($event)">
     </div>
 </div>

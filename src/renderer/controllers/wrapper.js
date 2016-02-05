@@ -50,6 +50,10 @@ ngModule.controller("Wrapper", ["$scope", function($scope) {
 
         // Add to the array
         $scope.commands.push(newCommand);
+
+        // Scroll to the buttom
+        var consolesListElem = document.querySelector('.app-consoles');
+        consolesListElem.scrollTop = consolesListElem.scrollHeight;
     };
 
     // Removes a command from the list

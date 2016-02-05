@@ -15,6 +15,7 @@ ngModule.directive("appconsole", function() {
 
             $scope.hasOutput = false;
             $scope.indicatorClass = "icon-running";
+            $scope.expanded = true;
 
             // Create and mount the terminal
             term = new termjs.Terminal({
@@ -91,6 +92,11 @@ ngModule.directive("appconsole", function() {
                     $scope.wrapper.close($scope.command);
                     $scope.command.kill();
                 }
+            };
+
+            // Expand/collapse the terminal
+            $scope.toggleCollapse = function() {
+                $scope.expanded = !$scope.expanded;
             };
 
             // Stuff for resizing
