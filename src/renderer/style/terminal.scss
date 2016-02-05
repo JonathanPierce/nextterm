@@ -44,7 +44,10 @@
 }
 
 .app-console-command {
-    flex: 1 0 auto;
+    flex: 1 1 auto;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .app-console-options {
@@ -88,6 +91,7 @@
 
 .app-console-indicator {
     padding-right: 6px;
+    flex: 0 0 auto;
 
     &.icon-error {
         color: red;

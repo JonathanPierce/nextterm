@@ -32,10 +32,13 @@
         padding: 3px 6px;
         color: white;
         cursor: pointer;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
 
     .app-logo, .app-header-options {
-        flex: 0 1 auto;
+        flex: 0 0 auto;
         color: white;
         font-size: 18pt;
         font-weight: 600;
