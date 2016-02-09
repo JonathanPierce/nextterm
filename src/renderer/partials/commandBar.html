@@ -1,4 +1,14 @@
 <div class="app-commandBar">
-    <input type="text" class="command-input" ng-model="command" ng-keydown="handleKeyDown($event)" placeholder="enter a command...">
-    <button ng-click="runCommand()" class="btn-run-command icon icon-run" ng-disabled="command.length == 0" ng-trim="true" title="run command!"></button>
+    <input type="text"
+        class="command-input"
+        ng-model="command"
+        ng-keydown="handleKeyDown($event)"
+        ng-change="queryAutocomplete()"
+        ng-focus="queryAutocomplete()"
+        ng-trim="true"
+        placeholder="enter a command..."></input>
+    <button ng-click="runCommand()"
+        class="btn-run-command icon icon-run"
+        ng-disabled="command.length == 0"
+        title="run command!"></button>
 </div>

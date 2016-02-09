@@ -1,6 +1,7 @@
 var ipc = require("electron").ipcMain,
     pty = require("pty.js"),
     child_process = require("child_process"),
+    Autocomplete = require("./autocomplete.js"),
     dialog = require("electron").dialog,
     cwd = process.env.HOME,
     childMap = {};
@@ -45,6 +46,9 @@ ipc.on("run-command", function(event, args) {
 
     child.on("data", onData);
     child.on("exit", onClose);
+
+    // Save to the command history
+    Autocomplete.addHistory(command);
 });
 
 // Write the input to the correct terminal
@@ -111,3 +115,10 @@ ipc.on("gui-change-cwd", function(event, args) {
         }
     });
 });
+
+// Helper interface functions
+module.exports = {
+    getCWD: function() {
+        return cwd;
+    }
+};
