@@ -1,11 +1,12 @@
 // Functions for handling command history and autocomplete
 var Autocomplete,
     ipc = require("electron").ipcMain,
+    child_process = require("child_process"),
     fs = require('fs');
 
 Autocomplete = (function() {
     var history, historyJSON,
-        addHistory, query, getGhost, tabComplete,
+        addHistory, query, getLocal,
         dateSortFun;
 
     // When the app loads, try to get the history JSON
@@ -21,7 +22,7 @@ Autocomplete = (function() {
 
     // Function for sorting history entries by date
     dateSortFun = function(a,b) {
-        return a.date - b.date;
+        return b.date - a.date;
     };
 
     // Add a command to the history, and save to disk
@@ -59,10 +60,56 @@ Autocomplete = (function() {
         fs.writeFile("saved_data/history.json", historyJSON);
     };
 
+    // Retreives local file/folder suggestions based on a prefix
+    getLocal = function(prefix, cwd) {
+        var parts = prefix.trim().split(" "), last, lastSlashIndex, folder, file, ls_result, results = [];
+
+        if(parts.length > 1 && parts[parts.length - 1].length > 0) {
+            last = parts[parts.length - 1];
+
+            if(last !== ".." && last !== ".") {
+                lastSlashIndex = last.lastIndexOf("/");
+
+                // Get the working directory and partial file
+                if(lastSlashIndex === -1) {
+                    folder = "";
+                    file = last;
+                } else {
+                    folder = last.slice(0, lastSlashIndex + 1);
+                    file = last.slice(lastSlashIndex + 1);
+                }
+
+                // Perform the ls
+                ls_result = child_process.spawnSync(
+                    "bash",
+                    ["-c", "ls " + folder + " | grep \"^" + file + "\""],
+                    {cwd: cwd}
+                );
+
+                if(ls_result.status === 0) {
+                    // Only allow 10 results
+                    results = ls_result.stdout.toString().trim().split("\n").slice(0,10);
+
+                    // Put in correct format
+                    results = results.map(function(result) {
+                        return {
+                            command: parts.slice(0,-1).join(" ") + " " + folder + result,
+                            bin: 5,
+                            date: Date.now()
+                        };
+                    });
+                }
+            }
+        }
+
+        return results;
+    };
+
     // Query history/autocomplete based on a prefix
     query = function(prefix) {
         var bins = [[],[],[],[]], getBin,
-            cwd = require("./commands.js").getCWD();
+            cwd = require("./commands.js").getCWD(),
+            localResults = getLocal(prefix, cwd), combined;
 
         getBin = function(entry) {
             if(prefix !== "" && entry.command.indexOf(prefix) === 0) {
@@ -97,19 +144,13 @@ Autocomplete = (function() {
         });
 
         // Append them all together
-        return bins[0].concat(bins[1]).concat(bins[2]).concat(bins[3]);
-    };
-
-    // Handles tab completion on a prefix accordingly
-    tabComplete = function(prefix) {
-
+        return bins[0].concat(localResults).concat(bins[1]).concat(bins[2]).concat(bins[3]);
     };
 
     // Return out the interface
     return {
         addHistory: addHistory,
-        query: query,
-        tabComplete: tabComplete
+        query: query
     };
 })();
 

@@ -79,9 +79,6 @@ Command = function(command, options) {
         // Deregister any listeners
         listeners.deregister(id);
 
-        // TEMP
-        console.log("CLOSED " + id + " with code " + code);
-
         // Did the working directory change?
         var newCWD = null, isCD = Commands.isCD(command);
         if(code === 0 && isCD !== null) {
