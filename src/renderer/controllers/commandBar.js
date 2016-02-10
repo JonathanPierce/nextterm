@@ -14,6 +14,7 @@ ngModule.directive("appcommandbar", function() {
             $scope.suggestions = [];
             $scope.suggestionIndex = -1;
 
+            // Handle keyboard stuff
             $scope.handleKeyDown = function($event) {
                 // Hit enter
                 if($event.keyCode === 13) {
@@ -62,6 +63,7 @@ ngModule.directive("appcommandbar", function() {
                     if($scope.suggestionIndex !== -1) {
                         $scope.command = $scope.suggestions[$scope.suggestionIndex].command;
                         $scope.suggestionIndex = -1;
+                        $scope.queryAutocomplete();
                     } else {
                         // Otherwise, filter selections to only prefix matches
                         $scope.suggestions = $scope.suggestions.filter(function(entry) {
@@ -86,6 +88,7 @@ ngModule.directive("appcommandbar", function() {
                         // If there is only one result, set it as the command
                         if(singleResult) {
                             $scope.command = singleResult.command;
+                            $scope.queryAutocomplete();
                         } else {
                             // Otherwise, show these suggestions
                             if($scope.suggestions.length > 0) {
@@ -100,6 +103,20 @@ ngModule.directive("appcommandbar", function() {
                 // Some other key
                 $scope.suggestionIndex = -1;
             };
+
+            // Keep the selected autosuggest result scrolled into view
+            $scope.$watch("suggestionIndex", function(newValue) {
+                // Handle the scrolling
+                if(newValue !== -1) {
+                    window.setTimeout(function() {
+                        // Hack to get the correct elem after render
+                        var elem = document.querySelector(".app-autosuggest-suggestion.selected");
+                        if(elem) {
+                            elem.scrollIntoView(true);
+                        }
+                    }, 10);
+                }
+            });
 
             // Main function for running commands
             $scope.runCommand = function(command) {

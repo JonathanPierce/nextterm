@@ -35,6 +35,7 @@ ngModule.directive("appflyout", function() {
                 });
             });
 
+            // Show and hide as appropriate
             $scope.$watch("displayIf", function(newValue) {
                 if(newValue) {
                     startListening();

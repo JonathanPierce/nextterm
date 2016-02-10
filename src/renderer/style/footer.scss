@@ -47,9 +47,27 @@
     border-top: 2px solid $main_color;
     overflow-x: hidden;
     overflow-y: auto;
+    z-index: 100;
 
-    .selected {
-        background-color: $main_accent;
-        color: white;
+    .app-autosuggest-suggestion {
+        cursor: pointer;
+        font-size: 11pt;
+        padding: 3px;
+
+        &.selected, &:hover {
+            background-color: $main_accent;
+            color: white;
+        }
     }
+}
+
+.app-autosuggest-eater {
+    width: 100%;
+    height: calc(100% - 36px);
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    background: rgba(50,50,50,0.15);
+    cursor: pointer;
+    z-index: 50;
 }

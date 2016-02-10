@@ -1,11 +1,18 @@
 <div class="app-commandBar">
     <div class="app-autosuggest" ng-show="suggestionIndex != -1">
         <div ng-repeat="suggestion in suggestions.slice().reverse()">
-            <div class="app-autosuggestion-suggestion no-select"
-                ng-class="{selected: suggestion == suggestions[suggestionIndex]}">
+            <div class="app-autosuggest-suggestion no-select"
+                ng-class="{selected: suggestion == suggestions[suggestionIndex]}"
+                title="click to run command"
+                ng-click="runCommand(suggestion.command)">
                 {{suggestion.command}}
             </div>
         </div>
+    </div>
+    <div class="app-autosuggest-eater"
+        ng-show="suggestionIndex != -1"
+        ng-click="suggestionIndex = -1"
+        title="click to close suggestions">
     </div>
 
     <input type="text"
@@ -15,7 +22,6 @@
         ng-change="queryAutocomplete()"
         ng-focus="queryAutocomplete()"
         ng-trim="true"
-        ng-blur="suggestionIndex = -1"
         placeholder="enter a command..."></input>
     <button ng-click="runCommand()"
         class="btn-run-command icon icon-run"

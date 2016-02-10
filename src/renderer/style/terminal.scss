@@ -43,6 +43,11 @@
     justify-content: space-between;
 }
 
+.app-console-wrapper.short {
+    height: 4px;
+    overflow: hidden;
+}
+
 .app-console-command {
     flex: 1 1 auto;
     white-space: nowrap;

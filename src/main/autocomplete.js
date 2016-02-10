@@ -127,6 +127,17 @@ Autocomplete = (function() {
             }
         };
 
+        // De-dupe local results
+        localResults = localResults.filter(function(entry) {
+            for(i = 0; i < history.length; i++) {
+                if(history[i].command == entry.command) {
+                    return false; // matches, eek!
+                }
+            }
+
+            return true;
+        });
+
         // For each history member, send to correct bin
         history.map(function(entry) {
             var bin = getBin(entry);
