@@ -53,10 +53,17 @@
         cursor: pointer;
         font-size: 11pt;
         padding: 3px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
 
         &.selected, &:hover {
             background-color: $main_accent;
             color: white;
+
+            b {
+                border-bottom: 1px dotted white;
+            }
         }
     }
 }

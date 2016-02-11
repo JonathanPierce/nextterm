@@ -67,38 +67,36 @@ Autocomplete = (function() {
         if(parts.length > 1 && parts[parts.length - 1].length > 0) {
             last = parts[parts.length - 1];
 
-            if(last !== ".." && last !== ".") {
-                lastSlashIndex = last.lastIndexOf("/");
+            lastSlashIndex = last.lastIndexOf("/");
 
-                // Get the working directory and partial file
-                if(lastSlashIndex === -1) {
-                    folder = "";
-                    file = last;
-                } else {
-                    folder = last.slice(0, lastSlashIndex + 1);
-                    file = last.slice(lastSlashIndex + 1);
-                }
+            // Get the working directory and partial file
+            if(lastSlashIndex === -1) {
+                folder = "";
+                file = last;
+            } else {
+                folder = last.slice(0, lastSlashIndex + 1);
+                file = last.slice(lastSlashIndex + 1);
+            }
 
-                // Perform the ls
-                ls_result = child_process.spawnSync(
-                    "bash",
-                    ["-c", "ls " + folder + " | grep \"^" + file + "\""],
-                    {cwd: cwd}
-                );
+            // Perform the ls
+            ls_result = child_process.spawnSync(
+                "bash",
+                ["-c", "ls " + folder + " | grep \"^" + file + "\""],
+                {cwd: cwd}
+            );
 
-                if(ls_result.status === 0) {
-                    // Only allow 10 results
-                    results = ls_result.stdout.toString().trim().split("\n").slice(0,10);
+            if(ls_result.status === 0) {
+                // Only allow 10 results
+                results = ls_result.stdout.toString().trim().split("\n").slice(0,10);
 
-                    // Put in correct format
-                    results = results.map(function(result) {
-                        return {
-                            command: parts.slice(0,-1).join(" ") + " " + folder + result,
-                            bin: 5,
-                            date: Date.now()
-                        };
-                    });
-                }
+                // Put in correct format
+                results = results.map(function(result) {
+                    return {
+                        command: parts.slice(0,-1).join(" ") + " " + folder + result,
+                        bin: 5,
+                        date: Date.now()
+                    };
+                });
             }
         }
 

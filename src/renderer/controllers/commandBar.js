@@ -10,9 +10,30 @@ ngModule.directive("appcommandbar", function() {
         },
         templateUrl: "partials/commandBar.html",
         link: function($scope, element, attrs) {
+            var showSuggestions, hideSuggestions;
+
             $scope.command = "";
+            $scope.commandCache = "";
             $scope.suggestions = [];
             $scope.suggestionIndex = -1;
+
+            // Show/hide suggestions helpers
+            showSuggestions = function() {
+                if($scope.suggestions.length > 0) {
+                    $scope.suggestionIndex = 0;
+                    $scope.commandCache = $scope.command;
+                    $scope.command = $scope.suggestions[0].command;
+                }
+            }
+
+            hideSuggestions = function(restore) {
+                $scope.suggestionIndex = -1;
+                if(restore === true) {
+                    $scope.command = $scope.commandCache;
+                }
+                commandCache = "";
+            }
+            $scope.hideSuggestions = hideSuggestions;
 
             // Handle keyboard stuff
             $scope.handleKeyDown = function($event) {
@@ -34,9 +55,10 @@ ngModule.directive("appcommandbar", function() {
                     $event.preventDefault();
 
                     if($scope.suggestionIndex === -1) {
-                        $scope.suggestionIndex = 0;
+                        showSuggestions();
                     } else {
                         $scope.suggestionIndex = Math.min($scope.suggestionIndex + 1, $scope.suggestions.length - 1);
+                        $scope.command = $scope.suggestions[$scope.suggestionIndex].command;
                     }
 
                     return;
@@ -47,9 +69,10 @@ ngModule.directive("appcommandbar", function() {
                     $event.preventDefault();
 
                     if($scope.suggestionIndex <= 0) {
-                        $scope.suggestionIndex = -1;
+                        hideSuggestions(true);
                     } else {
-                        $scope.suggestionIndex = Math.max($scope.suggestionIndex - 1, 0);
+                        $scope.suggestionIndex = Math.max(Math.min($scope.suggestionIndex - 1, $scope.suggestions.length - 1), 0);
+                        $scope.command = $scope.suggestions[$scope.suggestionIndex].command;
                     }
 
                     return;
@@ -62,8 +85,8 @@ ngModule.directive("appcommandbar", function() {
                     // If there is a suggestion selected, set the command and hide
                     if($scope.suggestionIndex !== -1) {
                         $scope.command = $scope.suggestions[$scope.suggestionIndex].command;
-                        $scope.suggestionIndex = -1;
                         $scope.queryAutocomplete();
+                        hideSuggestions(false);
                     } else {
                         // Otherwise, filter selections to only prefix matches
                         $scope.suggestions = $scope.suggestions.filter(function(entry) {
@@ -92,7 +115,7 @@ ngModule.directive("appcommandbar", function() {
                         } else {
                             // Otherwise, show these suggestions
                             if($scope.suggestions.length > 0) {
-                                $scope.suggestionIndex = 0;
+                                showSuggestions();
                             }
                         }
                     }
@@ -101,7 +124,7 @@ ngModule.directive("appcommandbar", function() {
                 }
 
                 // Some other key
-                $scope.suggestionIndex = -1;
+                hideSuggestions(false);
             };
 
             // Keep the selected autosuggest result scrolled into view

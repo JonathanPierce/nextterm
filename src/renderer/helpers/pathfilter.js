@@ -24,4 +24,4 @@ ngModule.filter("path", function() {
         // Put it back together
         return parts[0] === "~" ? parts.join("/") : "/" + parts.join("/");
     };
-})
+});
