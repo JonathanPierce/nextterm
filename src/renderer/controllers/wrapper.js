@@ -2,7 +2,7 @@ var ngModule = require("../ngModule"),
     commands = require("../commands");
 
 ngModule.controller("Wrapper", ["$scope", function($scope) {
-    var canExecute, resizeTimeout, resizeComplete;
+    var canExecute, resizeTimeout, resizeComplete, resetClear;
 
     $scope.commands = [];
     $scope.cols = Math.floor((document.body.offsetWidth - 32) / 6.69); // Rough initial estimate
@@ -41,6 +41,11 @@ ngModule.controller("Wrapper", ["$scope", function($scope) {
                 "In order to start another program, you first need to close one the programs that is already running.",
                 "Too many programs!"
             );
+        }
+
+        // Is this a "reset" or "clear"
+        if(resetClear(command)) {
+            return;
         }
 
         // Create the command
@@ -138,4 +143,20 @@ ngModule.controller("Wrapper", ["$scope", function($scope) {
 
         resizeTimeout = window.setTimeout(resizeComplete, 300);
     });
+
+    // Handle "reset" or "clear" commands
+    resetClear = function(command) {
+        var lowercase = command.toLowerCase().trim(), result;
+
+        if(lowercase === "reset" || lowercase === "clear") {
+            $scope.commands = $scope.commands.filter(function(entry) {
+                return !entry.isClosed();
+            });
+
+            return true;
+        }
+
+        // Not a reset or clear
+        return false;
+    }
 }]);
