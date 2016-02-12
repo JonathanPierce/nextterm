@@ -11,6 +11,7 @@
     </div>
     <div class="app-console-wrapper" ng-show="hasOutput" ng-class="{short: !expanded}">
         <div class="term"></div>
+        <div class="app-console-scrollGuard" ng-show="wrapper.scrollGuard"></div>
     </div>
     <div class="app-console-footer no-select" ng-show="hasOutput && expanded" title="resize terminal"
         ng-mousedown="startResizing($event)">

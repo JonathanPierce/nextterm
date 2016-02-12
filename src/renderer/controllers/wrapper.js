@@ -2,10 +2,12 @@ var ngModule = require("../ngModule"),
     commands = require("../commands");
 
 ngModule.controller("Wrapper", ["$scope", function($scope) {
-    var canExecute, resizeTimeout, resizeComplete, resetClear;
+    var canExecute, resizeTimeout, resizeComplete, resetClear,
+        scrollGuardTimeout = null, scrollGuardHandler;
 
     $scope.commands = [];
     $scope.cols = Math.floor((document.body.offsetWidth - 32) / 6.69); // Rough initial estimate
+    $scope.scrollGuard = false;
 
     // Can we execute a command?
     canExecute = function() {
@@ -158,5 +160,27 @@ ngModule.controller("Wrapper", ["$scope", function($scope) {
 
         // Not a reset or clear
         return false;
-    }
+    };
+
+    // Make scrolling nicer
+    document.querySelector('.app-consoles').addEventListener("scroll", function() {
+        if(scrollGuardTimeout === null) {
+            // Enable things
+            $scope.$apply(function() {
+                $scope.scrollGuard = true;
+            });
+            scrollGuardTimeout = window.setTimeout(scrollGuardHandler, 250);
+        } else {
+            // Continue things
+            window.clearTimeout(scrollGuardTimeout);
+            scrollGuardTimeout = window.setTimeout(scrollGuardHandler, 250);
+        }
+    });
+
+    scrollGuardHandler = function() {
+        $scope.$apply(function() {
+            $scope.scrollGuard = false;
+            scrollGuardTimeout = null;
+        });
+    };
 }]);
